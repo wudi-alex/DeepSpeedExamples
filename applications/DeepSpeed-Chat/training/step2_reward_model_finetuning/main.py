@@ -3,6 +3,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # DeepSpeed Team
+import os
+
+os.environ['TRANSFORMERS_CACHE'] = '/datasets/Large_Language_Models'
+
 import argparse
 import math
 
