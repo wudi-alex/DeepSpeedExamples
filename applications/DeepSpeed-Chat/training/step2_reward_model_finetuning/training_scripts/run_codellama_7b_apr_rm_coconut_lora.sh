@@ -9,7 +9,7 @@ if [ "$OUTPUT" == "" ]; then
     OUTPUT=/projects/ksun3/dwu25/trained_models/output_step2_codellama_7b_epoch5_lr9.65e-6
 fi
 if [ "$ZERO_STAGE" == "" ]; then
-    ZERO_STAGE=3
+    ZERO_STAGE=0
 fi
 mkdir -p $OUTPUT
 
