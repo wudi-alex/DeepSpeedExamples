@@ -13,7 +13,7 @@ if [ "$ZERO_STAGE" == "" ]; then
 fi
 mkdir -p $OUTPUT
 
-deepspeed main.py \
+deepspeed ../main.py \
    --data_path /projects/ksun3/dwu25/apr_datasets_processing/coconut/data/apr_rm_coconut \
    --data_split 0,1,0 \
    --model_name_or_path codellama/CodeLlama-7b-hf \
