@@ -128,7 +128,7 @@ def create_hf_model(model_class,
                     ds_config=None,
                     rlhf_training=False,
                     dropout=None,
-                    is_quantization_4bit=True):
+                    is_quantization_4bit=False):
     if is_quantization_4bit:
         model_config = AutoConfig.from_pretrained(model_name_or_path,
                                                   load_in_4bit=True,
