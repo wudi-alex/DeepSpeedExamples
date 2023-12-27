@@ -1,8 +1,27 @@
 #!/bin/bash
-# Copyright (c) Microsoft Corporation.
-# SPDX-License-Identifier: Apache-2.0
+#SBATCH --partition=contrib-gpuq
+#SBATCH --qos=ksun
+#SBATCH --job-name=apr_rm_dschat
+#SBATCH --output=/projects/ksun3/%u/sbatch_log/%x-%N-%j.out
+#SBATCH --error=/projects/ksun3/%u/sbatch_log/%x-%N-%j.err
+#SBATCH --nodes=1
+#SBATCH --gres=gpu:A100.80gb:4
+#SBATCH --ntasks-per-node=20
+#SBATCH --mem=480G
+#SBATCH --export=ALL
+#SBATCH --time=5-00:00:00
 
-# DeepSpeed Team
+set echo
+umask 0022
+
+# to see ID and state of GPUs assigned
+nvidia-smi
+
+module load gnu10
+
+source 	~/Anaconda/etc/profile.d/conda.sh
+conda activate dschat
+
 OUTPUT=$1
 ZERO_STAGE=$2
 if [ "$OUTPUT" == "" ]; then
