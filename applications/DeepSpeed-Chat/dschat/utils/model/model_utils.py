@@ -161,7 +161,7 @@ def create_hf_model(model_class,
 
     if is_quantization_4bit:
         model = prepare_model_for_kbit_training(model)
-        logging.info(f"prepare_model_for_kbit_training")
+        print(f"prepare_model_for_kbit_training")
 
     model.config.end_token_id = tokenizer.eos_token_id
     model.config.pad_token_id = model.config.eos_token_id
