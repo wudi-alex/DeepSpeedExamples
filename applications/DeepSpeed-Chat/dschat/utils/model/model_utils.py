@@ -8,6 +8,7 @@ import torch
 from transformers import (
     AutoConfig,
     AutoModel,
+    BitsAndBytesConfig,
 )
 from huggingface_hub import snapshot_download
 from transformers.deepspeed import HfDeepSpeedConfig
@@ -29,17 +30,17 @@ def causal_lm_model_to_fp32_loss(model):
     """ Convert CausalLM model to calculate loss in fp32 """
 
     def causal_lm_forward(
-        input_ids=None,
-        past_key_values=None,
-        attention_mask=None,
-        head_mask=None,
-        inputs_embeds=None,
-        labels=None,
-        use_cache=None,
-        output_attentions=None,
-        output_hidden_states=None,
-        return_dict=None,
-        **deprecated_arguments,
+            input_ids=None,
+            past_key_values=None,
+            attention_mask=None,
+            head_mask=None,
+            inputs_embeds=None,
+            labels=None,
+            use_cache=None,
+            output_attentions=None,
+            output_hidden_states=None,
+            return_dict=None,
+            **deprecated_arguments,
     ):
         kwargs = dict() if model.config.model_type == "llama" else dict(
             head_mask=head_mask)
@@ -73,7 +74,7 @@ def causal_lm_model_to_fp32_loss(model):
 
         if not return_dict:
             # re-pack output with fp32 loss
-            return ((loss, ) + output) if loss is not None else output
+            return ((loss,) + output) if loss is not None else output
 
         output.loss = loss
         return output
@@ -82,13 +83,65 @@ def causal_lm_model_to_fp32_loss(model):
     model.forward = causal_lm_forward
 
 
+def prepare_model_for_kbit_training(model, use_gradient_checkpointing=True):
+    """
+    This method wraps the entire protocol for preparing a model before running a training. This includes:
+        1- Cast the layernorm in fp32 2- making output embedding layer require grads 3- Add the upcasting of the lm
+        head to fp32
+
+    Args:
+        model, (`transformers.PreTrainedModel`):
+            The loaded model from `transformers`
+    """
+    loaded_in_kbit = getattr(model, "is_loaded_in_8bit", False) or getattr(model, "is_loaded_in_4bit", False)
+    is_gptq_quantized = getattr(model, "quantization_method", None) == "gptq"
+    for name, param in model.named_parameters():
+        # freeze base model's layers
+        param.requires_grad = False
+
+    if not is_gptq_quantized:
+        # cast all non INT8 parameters to fp32
+        for param in model.parameters():
+            if (param.dtype == torch.float16) or (param.dtype == torch.bfloat16):
+                param.data = param.data.to(torch.float32)
+
+    if (loaded_in_kbit or is_gptq_quantized) and use_gradient_checkpointing:
+        # For backward compatibility
+        if hasattr(model, "enable_input_require_grads"):
+            model.enable_input_require_grads()
+        else:
+
+            def make_inputs_require_grad(module, input, output):
+                output.requires_grad_(True)
+
+            model.get_input_embeddings().register_forward_hook(make_inputs_require_grad)
+
+        # enable gradient checkpointing for memory efficiency
+        model.gradient_checkpointing_enable()
+
+    return model
+
+
 def create_hf_model(model_class,
                     model_name_or_path,
                     tokenizer,
                     ds_config=None,
                     rlhf_training=False,
-                    dropout=None):
-    model_config = AutoConfig.from_pretrained(model_name_or_path)
+                    dropout=None,
+                    is_quantization_4bit=True):
+    if is_quantization_4bit:
+        model_config = AutoConfig.from_pretrained(model_name_or_path,
+                                                  load_in_4bit=True,
+                                                  use_safetensors=False,
+                                                  torch_dtype=torch.bfloat16,
+                                                  quantization_config=BitsAndBytesConfig(
+                                                      load_in_4bit=True,
+                                                      bnb_4bit_compute_dtype=torch.bfloat16,
+                                                      bnb_4bit_use_double_quant=True,
+                                                      bnb_4bit_quant_type="nf4",
+                                                  ), )
+    else:
+        model_config = AutoConfig.from_pretrained(model_name_or_path)
     configure_dropout(model_config, dropout)
 
     # Note: dschf is defined in function scope to avoid global effects

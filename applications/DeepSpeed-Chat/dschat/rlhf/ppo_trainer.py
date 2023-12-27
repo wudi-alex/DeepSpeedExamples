@@ -112,7 +112,7 @@ class DeepSpeedPPOTrainer():
         out_seq = []
         for i in range(batch_size):
             if valid_ans_len[
-                    i] <= 1:  # if the answer is shorter than 1 token, drop it
+                i] <= 1:  # if the answer is shorter than 1 token, drop it
                 print(
                     f'Dropping too short generated answer: {step=}: \n'
                     f'prompts: {self.tokenizer.batch_decode(prompts, skip_special_tokens=False)}\n'
@@ -155,7 +155,7 @@ class DeepSpeedPPOTrainer():
             reward_score = self.reward_model.forward_value(
                 seq, attention_mask,
                 prompt_length=self.prompt_length)['chosen_end_scores'].detach(
-                )
+            )
             values = self.critic_model.forward_value(
                 seq, attention_mask, return_value_only=True).detach()[:, :-1]
 
@@ -171,7 +171,7 @@ class DeepSpeedPPOTrainer():
             'prompts': prompts,
             'logprobs': gather_log_probs(logits[:, :-1, :], seq[:, 1:]),
             'ref_logprobs': gather_log_probs(logits_ref[:, :-1, :], seq[:,
-                                                                        1:]),
+                                                                    1:]),
             'value': values,
             'rewards': reward_score,
             'input_ids': seq,
@@ -236,8 +236,7 @@ class DeepSpeedPPOTrainer():
         value = self.critic_model.forward_value(**batch,
                                                 return_value_only=True,
                                                 use_cache=False)[:, :-1]
-        critic_loss = self.critic_loss_fn(value[:, start:], old_values[:,
-                                                                       start:],
+        critic_loss = self.critic_loss_fn(value[:, start:], old_values[:, start:],
                                           returns, action_mask[:, start:])
         self.critic_model.backward(critic_loss)
 
@@ -299,8 +298,8 @@ class DeepSpeedPPOTrainer():
         if self.compute_fp32_loss:
             values = values.float()
             values_clipped = values_clipped.float()
-        vf_loss1 = (values - returns)**2
-        vf_loss2 = (values_clipped - returns)**2
+        vf_loss1 = (values - returns) ** 2
+        vf_loss2 = (values_clipped - returns) ** 2
         vf_loss = 0.5 * torch.sum(
             torch.max(vf_loss1, vf_loss2) * mask) / mask.sum()
         return vf_loss
