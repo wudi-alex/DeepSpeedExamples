@@ -54,3 +54,4 @@ deepspeed ../main.py \
    --lora_dim 32 \
    --lora_module_name "layers." \
    --output_dir $OUTPUT \
+   --eval_interval 50
