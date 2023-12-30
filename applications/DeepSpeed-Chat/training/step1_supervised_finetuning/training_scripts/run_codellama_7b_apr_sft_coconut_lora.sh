@@ -56,8 +56,8 @@ deepspeed ../main.py \
    --num_warmup_steps 0 \
    --seed 1234 \
    --gradient_checkpointing \
-   --zero_stage $ZERO_STAGE \
+   --zero_stage 3 \
    --deepspeed \
    --lora_dim 8 \
    --lora_module_name "layers." \
-   --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_sft \
+   --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_sft
