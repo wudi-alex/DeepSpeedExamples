@@ -16,6 +16,10 @@ for prompt_batch in prompt_train_dataloader:
     actor_loss, critic_loss = trainer.train_rlhf(out)
 
 """
+import os
+
+os.environ['TRANSFORMERS_CACHE'] = '/datasets/Large_Language_Models'
+
 import argparse
 import os
 import random
