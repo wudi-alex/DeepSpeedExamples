@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --partition=contrib-gpuq
 #SBATCH --qos=ksun
-#SBATCH --job-name=apr_rm_dschat
-#SBATCH --output=/projects/ksun3/%u/sbatch_log/%x-%N-%j.out
-#SBATCH --error=/projects/ksun3/%u/sbatch_log/%x-%N-%j.err
+#SBATCH --job-name=ds_apr_sft
+#SBATCH --output=/projects/ksun3/%u/sbatch_log/ds_apr_sft/%x-%N-%j.out
+#SBATCH --error=/projects/ksun3/%u/sbatch_log/ds_apr_sft/%x-%N-%j.err
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:A100.80gb:4
 #SBATCH --ntasks-per-node=20
@@ -41,7 +41,7 @@ if [ "$ZERO_STAGE" == "" ]; then
 fi
 mkdir -p $OUTPUT
 
-deepspeed main.py \
+deepspeed ../main.py \
    --data_path /projects/ksun3/dwu25/apr_datasets_processing/coconut/data/apr_rlhf_rm_coconut \
    --data_split 2,4,4 \
    --model_name_or_path codellama/CodeLlama-7b-hf \
