@@ -25,13 +25,23 @@ conda activate dschat
 OUTPUT=$1
 ZERO_STAGE=$2
 if [ "$OUTPUT" == "" ]; then
-    OUTPUT=/projects/ksun3/dwu25/trained_models/ds_apr_rm
+    OUTPUT=/projects/ksun3/dwu25/trained_models/ds_apr_sft
 fi
 if [ "$ZERO_STAGE" == "" ]; then
     ZERO_STAGE=3
 fi
 
-deepspeed ../main.py \
+OUTPUT=$1
+ZERO_STAGE=$2
+if [ "$OUTPUT" == "" ]; then
+    OUTPUT=./output_step1_llama2_7b_lora
+fi
+if [ "$ZERO_STAGE" == "" ]; then
+    ZERO_STAGE=3
+fi
+mkdir -p $OUTPUT
+
+deepspeed main.py \
    --data_path /projects/ksun3/dwu25/apr_datasets_processing/coconut/data/apr_rlhf_rm_coconut \
    --data_split 2,4,4 \
    --model_name_or_path codellama/CodeLlama-7b-hf \
@@ -39,18 +49,15 @@ deepspeed ../main.py \
    --per_device_eval_batch_size 128 \
    --max_seq_len 600 \
    --learning_rate 9.65e-6 \
-   --weight_decay 0.1 \
-   --num_padding_at_beginning 0 \
-   --num_train_epochs 5 \
+   --weight_decay 0. \
+   --num_train_epochs 5  \
    --gradient_accumulation_steps 1 \
    --lr_scheduler_type cosine \
    --num_warmup_steps 0 \
    --seed 1234 \
    --gradient_checkpointing \
-   --zero_stage 3 \
+   --zero_stage $ZERO_STAGE \
    --deepspeed \
-   --offload \
    --lora_dim 32 \
    --lora_module_name "layers." \
-   --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_rm \
-   --eval_interval 1000
+   --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_sft \

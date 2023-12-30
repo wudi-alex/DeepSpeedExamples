@@ -208,7 +208,7 @@ def create_dataset_split(current_dataset, raw_dataset, train_phase, tokenizer,
             reject_sentence = raw_dataset.get_prompt_and_rejected(
                 tmp_data)  # the accept response
 
-            # remove buggy line comment
+            # dwu remove buggy line comment
             chosen_sentence = remove_commented_buggy_line(chosen_sentence)
             reject_sentence = remove_commented_buggy_line(reject_sentence)
 
