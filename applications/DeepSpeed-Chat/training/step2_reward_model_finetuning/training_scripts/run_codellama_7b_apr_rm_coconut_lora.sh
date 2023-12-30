@@ -2,8 +2,8 @@
 #SBATCH --partition=contrib-gpuq
 #SBATCH --qos=ksun
 #SBATCH --job-name=ds_apr_rm
-#SBATCH --output=/projects/ksun3/%u/sbatch_log/ds_apr_rm/%x-%N-%j.out
-#SBATCH --error=/projects/ksun3/%u/sbatch_log/ds_apr_rm/%x-%N-%j.err
+#SBATCH --output=/projects/ksun3/%u/sbatch_log/ds_apr_rm_%x-%N-%j.out
+#SBATCH --error=/projects/ksun3/%u/sbatch_log/ds_apr_rm_%x-%N-%j.err
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:A100.80gb:4
 #SBATCH --ntasks-per-node=20
