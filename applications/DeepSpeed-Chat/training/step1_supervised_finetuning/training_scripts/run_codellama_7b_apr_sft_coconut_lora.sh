@@ -58,6 +58,6 @@ deepspeed main.py \
    --gradient_checkpointing \
    --zero_stage $ZERO_STAGE \
    --deepspeed \
-   --lora_dim 32 \
+   --lora_dim 8 \
    --lora_module_name "layers." \
    --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_sft \

@@ -50,7 +50,7 @@ deepspeed ../main.py \
    --zero_stage 3 \
    --deepspeed \
    --offload \
-   --lora_dim 32 \
+   --lora_dim 8 \
    --lora_module_name "layers." \
    --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_rm \
    --eval_interval 1000
