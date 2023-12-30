@@ -12,6 +12,16 @@ from deepspeed.accelerator import get_accelerator
 from dschat.utils.utils import print_rank_0
 
 
+def remove_commented_buggy_line(prompt):
+    def remove_comments(code):
+        lines = code.strip().split('\n')
+        return '\n'.join(line for line in lines if not line.strip().startswith('//')) + '\n'
+
+    pre, suffix = prompt.split(' <SUF>')[0], prompt.split(' <SUF>')[1]
+    prompt = remove_comments(pre) + ' <SUF>' + suffix
+    return prompt
+
+
 def print_all_ranks(tag, value, rank):
     world_size = torch.distributed.get_world_size()
     all_tensor = torch.zeros(world_size, dtype=torch.float32).to(
@@ -152,8 +162,29 @@ class DeepSpeedPPOTrainer():
         with torch.no_grad():
             output = self.actor_model(seq, attention_mask=attention_mask)
             output_ref = self.ref_model(seq, attention_mask=attention_mask)
+
+            # reward model need to remove buggy lines
+
+            seq_prompt_text = self.tokenizer.batch_decode(seq[:, :self.prompt_length])
+            reward_seq_prompt_text = [remove_commented_buggy_line(seq) for seq in seq_prompt_text]
+
+            reward_seq_prompt = self.tokenizer.batch_encode_plus(reward_seq_prompt_text, return_tensors="pt", padding="max_length",
+                                                        max_length=self.prompt_length)
+            reward_seq = torch.cat([reward_seq_prompt, seq[:, self.prompt_length:]], dim=1)
+            reward_attention_mask = reward_seq.not_equal(pad_token_id).long()
+
+            if self.args.print_answers and (step % self.args.print_answers_interval
+                                            == 0):
+                print(
+                    f"--- prompt --> step={step}, rank={torch.distributed.get_rank()}, {reward_seq_prompt}"
+                )
+
+            # reward_score = self.reward_model.forward_value(
+            #     seq, attention_mask,
+            #     prompt_length=self.prompt_length)['chosen_end_scores'].detach(
+            # )
             reward_score = self.reward_model.forward_value(
-                seq, attention_mask,
+                reward_seq, reward_attention_mask,
                 prompt_length=self.prompt_length)['chosen_end_scores'].detach(
             )
             values = self.critic_model.forward_value(

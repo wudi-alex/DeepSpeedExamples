@@ -18,6 +18,16 @@ from dschat.utils.data import raw_datasets
 from deepspeed.accelerator import get_accelerator
 
 
+def remove_commented_buggy_line(prompt):
+    def remove_comments(code):
+        lines = code.strip().split('\n')
+        return '\n'.join(line for line in lines if not line.strip().startswith('//')) + '\n'
+
+    pre, suffix = prompt.split(' <SUF>')[0], prompt.split(' <SUF>')[1]
+    prompt = remove_comments(pre) + ' <SUF>' + suffix
+    return prompt
+
+
 def get_raw_dataset(dataset_name, output_path, seed, local_rank):
 
     if "Dahoas/rm-static" in dataset_name:
@@ -197,6 +207,11 @@ def create_dataset_split(current_dataset, raw_dataset, train_phase, tokenizer,
                 tmp_data)  # the accept response
             reject_sentence = raw_dataset.get_prompt_and_rejected(
                 tmp_data)  # the accept response
+
+            # remove buggy line comment
+            chosen_sentence = remove_commented_buggy_line(chosen_sentence)
+            reject_sentence = remove_commented_buggy_line(reject_sentence)
+
             if chosen_sentence is not None and reject_sentence is not None:
                 chosen_sentence += end_of_conversation_token  # the accept response
                 reject_sentence += end_of_conversation_token
