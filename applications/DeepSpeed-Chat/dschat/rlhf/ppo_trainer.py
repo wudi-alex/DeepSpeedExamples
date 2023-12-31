@@ -173,10 +173,9 @@ class DeepSpeedPPOTrainer():
             reward_seq = torch.cat([reward_seq_prompt, seq[:, self.prompt_length:]], dim=1)
             reward_attention_mask = reward_seq.not_equal(pad_token_id).long()
 
-            if self.args.print_answers and (step % self.args.print_answers_interval
-                                            == 0):
+            if self.args.print_answers and (step % self.args.print_answers_interval == 0):
                 print(
-                    f"--- prompt --> step={step}, rank={torch.distributed.get_rank()}, {reward_seq_prompt}"
+                    f"--- reward prompt --> step={step}, rank={torch.distributed.get_rank()}, {[s.replace('</s>', '') for s in reward_seq_prompt]}"
                 )
 
             # reward_score = self.reward_model.forward_value(

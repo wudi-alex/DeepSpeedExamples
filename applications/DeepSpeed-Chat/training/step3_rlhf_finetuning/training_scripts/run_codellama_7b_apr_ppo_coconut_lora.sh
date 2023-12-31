@@ -50,8 +50,8 @@ deepspeed --master_port 12346 ../main.py \
    --actor_model_name_or_path /projects/ksun3/dwu25/trained_models/ds_apr_sft \
    --critic_model_name_or_path /projects/ksun3/dwu25/trained_models/ds_apr_rm \
    --num_padding_at_beginning 1 \
-   --per_device_generation_batch_size 48 \
-   --per_device_training_batch_size 48 \
+   --per_device_generation_batch_size 32 \
+   --per_device_training_batch_size 32 \
    --generation_batches 1 \
    --ppo_epochs 1 \
    --max_answer_seq_len 100 \
