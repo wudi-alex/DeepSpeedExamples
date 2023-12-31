@@ -125,8 +125,8 @@ class DeepSpeedPPOTrainer():
                 i] <= 1:  # if the answer is shorter than 1 token, drop it
                 print(
                     f'Dropping too short generated answer: {step=}: \n'
-                    f'prompts: {self.tokenizer.batch_decode(prompts, skip_special_tokens=False)}\n'
-                    f'answers: {self.tokenizer.batch_decode(ans, skip_special_tokens=False)}'
+                    f'prompts: {self.tokenizer.batch_decode(prompts, skip_special_tokens=True)}\n'
+                    f'answers: {self.tokenizer.batch_decode(ans, skip_special_tokens=True)}'
                 )
                 continue
             else:
@@ -135,8 +135,8 @@ class DeepSpeedPPOTrainer():
         if not out_seq:
             print(
                 f'All generated results are too short for rank={self.args.local_rank} step={step}\n'
-                f'-> prompts: {self.tokenizer.batch_decode(prompts, skip_special_tokens=False)}\n'
-                f'-> answers: {self.tokenizer.batch_decode(ans, skip_special_tokens=False)}'
+                f'-> prompts: {self.tokenizer.batch_decode(prompts, skip_special_tokens=True)}\n'
+                f'-> answers: {self.tokenizer.batch_decode(ans, skip_special_tokens=True)}'
             )
             return None
 
