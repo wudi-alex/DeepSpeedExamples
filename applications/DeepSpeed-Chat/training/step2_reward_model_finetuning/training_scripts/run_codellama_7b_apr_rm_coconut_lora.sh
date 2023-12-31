@@ -35,8 +35,8 @@ deepspeed ../main.py \
    --data_path /projects/ksun3/dwu25/apr_datasets_processing/coconut/data/apr_rlhf_rm_coconut \
    --data_split 2,4,4 \
    --model_name_or_path codellama/CodeLlama-7b-hf \
-   --per_device_train_batch_size 64 \
-   --per_device_eval_batch_size 128 \
+   --per_device_train_batch_size 48 \
+   --per_device_eval_batch_size 64 \
    --max_seq_len 600 \
    --learning_rate 9.65e-6 \
    --weight_decay 0.1 \
