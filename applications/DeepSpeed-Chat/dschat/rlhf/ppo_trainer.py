@@ -168,14 +168,15 @@ class DeepSpeedPPOTrainer():
             seq_prompt_text = self.tokenizer.batch_decode(seq[:, :self.prompt_length])
             reward_seq_prompt_text = [remove_commented_buggy_line(seq) for seq in seq_prompt_text]
 
-            reward_seq_prompt = self.tokenizer.batch_encode_plus(reward_seq_prompt_text, return_tensors="pt", padding="max_length",
-                                                        max_length=self.prompt_length)
+            reward_seq_prompt = self.tokenizer.batch_encode_plus(reward_seq_prompt_text, return_tensors="pt",
+                                                                 padding="max_length",
+                                                                 max_length=self.prompt_length)
             reward_seq = torch.cat([reward_seq_prompt, seq[:, self.prompt_length:]], dim=1)
             reward_attention_mask = reward_seq.not_equal(pad_token_id).long()
 
             if self.args.print_answers and (step % self.args.print_answers_interval == 0):
                 print(
-                    f"--- reward prompt --> step={step}, rank={torch.distributed.get_rank()}, {[s.replace('</s>', '') for s in reward_seq_prompt]}"
+                    f"--- reward prompt --> step={step}, rank={torch.distributed.get_rank()}, {self.tokenizer.batch_decode(reward_seq, skip_special_tokens=True)}"
                 )
 
             # reward_score = self.reward_model.forward_value(
