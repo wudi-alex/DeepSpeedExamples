@@ -91,7 +91,6 @@ def generate(model,
              do_sample=False,
              num_return_sequences=1,
              max_new_tokens=100):
-
     generate_ids = model.generate(inputs.input_ids,
                                   num_beams=num_beams,
                                   num_beam_groups=num_beam_groups,
@@ -112,7 +111,6 @@ def generate_constrastive_search(model,
                                  penalty_alpha=0.6,
                                  num_return_sequences=1,
                                  max_new_tokens=100):
-
     generate_ids = model.generate(inputs.input_ids,
                                   top_k=top_k,
                                   penalty_alpha=penalty_alpha,
@@ -135,7 +133,10 @@ def print_utils(gen_output):
 def prompt_eval(args, model_baseline, model_fintuned, tokenizer, device,
                 prompts):
     for prompt in prompts:
-        inputs = tokenizer(prompt, return_tensors="pt").to(device)
+        inputs = tokenizer(prompt,
+                           return_tensors="pt",
+                           max_length=600,
+                           padding="max_length").to(device)
         print("==========Baseline: Greedy=========")
         r_base = generate(model_baseline,
                           tokenizer,
@@ -222,12 +223,7 @@ def main():
     # to make it a more meaningful comparison.
     if args.language == "English":
         prompts = [
-            """</s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s
-></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s
-></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s
-></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s
-></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s
-></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s><s> <PRE> public String[] getMultiAttr(String name) {\n    String v[] = super.getMultiAttr(name);\n    if (v.length > 0) return v;\n    try {\n      Config c = mProv.getConfig();\n      // buggy code\n      
+            """<PRE> public String[] getMultiAttr(String name) {\n    String v[] = super.getMultiAttr(name);\n    if (v.length > 0) return v;\n    try {\n      Config c = mProv.getConfig();\n      // buggy code\n      
 // if (!c.isInheritedDomainAttr(name))\n <SUF> return sEmptyMulti;\n      else return c.getMultiAttr(name);\n    } catch (ServiceException e) {\n      return sEmptyMulti;\n    }\n  } <MID>"""
         ]
     elif args.language == "Chinese":
