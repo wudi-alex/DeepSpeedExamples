@@ -101,7 +101,7 @@ def generate(model,
                                   eos_token_id=tokenizer.eos_token_id,
                                   )
 
-    result = tokenizer.batch_decode([generate_ids],
+    result = tokenizer.batch_decode(generate_ids,
                                     skip_special_tokens=False,
                                     clean_up_tokenization_spaces=False)
     return result
