@@ -100,7 +100,7 @@ def generate(model,
                                   max_new_tokens=max_new_tokens)
 
     result = tokenizer.batch_decode(generate_ids,
-                                    skip_special_tokens=True,
+                                    skip_special_tokens=False,
                                     clean_up_tokenization_spaces=False)
     return result
 
