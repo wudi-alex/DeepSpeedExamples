@@ -135,7 +135,7 @@ def prompt_eval(args, model_baseline, model_fintuned, tokenizer, device,
     for prompt in prompts:
         inputs = tokenizer(prompt,
                            return_tensors="pt",
-                           max_length=600,
+                           max_length=500,
                            padding="max_length",
                            truncation=True,).to(device)
         print("==========Baseline: Greedy=========")
@@ -224,8 +224,7 @@ def main():
     # to make it a more meaningful comparison.
     if args.language == "English":
         prompts = [
-            """<PRE> public String[] getMultiAttr(String name) {\n    String v[] = super.getMultiAttr(name);\n    if (v.length > 0) return v;\n    try {\n      Config c = mProv.getConfig();\n      // buggy code\n      
-// if (!c.isInheritedDomainAttr(name))\n <SUF> return sEmptyMulti;\n      else return c.getMultiAttr(name);\n    } catch (ServiceException e) {\n      return sEmptyMulti;\n    }\n  } <MID>"""
+            """<PRE> public String[] getMultiAttr(String name) {\n    String v[] = super.getMultiAttr(name);\n    if (v.length > 0) return v;\n    try {\n      Config c = mProv.getConfig();\n      // buggy code\n      // if (!c.isInheritedDomainAttr(name))\n <SUF> return sEmptyMulti;\n      else return c.getMultiAttr(name);\n    } catch (ServiceException e) {\n      return sEmptyMulti;\n    }\n  } <MID>"""
         ]
     elif args.language == "Chinese":
         prompts = [
