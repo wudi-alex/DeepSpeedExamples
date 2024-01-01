@@ -222,8 +222,7 @@ def main():
     # to make it a more meaningful comparison.
     if args.language == "English":
         prompts = [
-            """<PRE> public String toString() {\n    StringBuilder sigma = new StringBuilder();\n    for (String property : this.getProperties())\n      // b
-uggy code\n      // sigma\n      //     .append(getClass().getSimpleName())\n      //     .append(property)\n      //     .append(" = ")\n      //     .append(this.getValue(property))\n      //     .append("; ");\n <SUF>    for (String key : getForeignKeys()) {\n      Record subrecord = (Record) getValue(ke
+            """<PRE> public String toString() {\n    StringBuilder sigma = new StringBuilder();\n    for (String property : this.getProperties())\n      // buggy code\n      // sigma\n      //     .append(getClass().getSimpleName())\n      //     .append(property)\n      //     .append(" = ")\n      //     .append(this.getValue(property))\n      //     .append("; ");\n <SUF>    for (String key : getForeignKeys()) {\n      Record subrecord = (Record) getValue(ke
 y);\n      if (subrecord != null) sigma.append(subrecord.toString());\n    }\n    return sigma.toString();\n  } <MID>"""
         ]
     elif args.language == "Chinese":
