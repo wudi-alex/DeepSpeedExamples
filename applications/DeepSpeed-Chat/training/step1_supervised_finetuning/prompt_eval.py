@@ -136,7 +136,8 @@ def prompt_eval(args, model_baseline, model_fintuned, tokenizer, device,
         inputs = tokenizer(prompt,
                            return_tensors="pt",
                            max_length=600,
-                           padding="max_length").to(device)
+                           padding="max_length",
+                           padding_side='left').to(device)
         print("==========Baseline: Greedy=========")
         r_base = generate(model_baseline,
                           tokenizer,
