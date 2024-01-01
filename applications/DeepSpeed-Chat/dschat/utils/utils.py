@@ -81,7 +81,7 @@ def get_tokenizer(model_name_or_path, fast_tokenizer=True):
         # tokenizer.add_special_tokens({'pad_token': '[PAD]'})
         tokenizer.add_special_tokens({'pad_token': '<unk>'})
         # tokenizer.pad_token = tokenizer.eos_token
-        tokenizer.padding_side = 'right'
+        # tokenizer.padding_side = 'right'
     return tokenizer
 
 
