@@ -99,6 +99,8 @@ def generate(model,
                                   max_new_tokens=max_new_tokens,
                                   pad_token_id=tokenizer.pad_token_id,
                                   eos_token_id=tokenizer.eos_token_id,
+                                  temperature=1.0,
+                                  early_stopping=False,
                                   )
 
     result = tokenizer.batch_decode(generate_ids,
@@ -136,9 +138,9 @@ def prompt_eval(args, model_baseline, model_fintuned, tokenizer, device,
                 prompts):
     for prompt in prompts:
         inputs = tokenizer(prompt,
-                           # max_length=500,
-                           # padding="max_length",
-                           # truncation=True,
+                           max_length=500,
+                           padding="max_length",
+                           truncation=True,
                            return_tensors="pt"
                            ).to(device)
         print("==========Baseline: Greedy=========")
