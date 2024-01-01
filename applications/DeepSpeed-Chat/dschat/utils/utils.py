@@ -72,7 +72,7 @@ class ExponentialMovingAverage:
         return self.ema if self.ema is not None else 0.
 
 
-def get_tokenizer(model_name_or_path, fast_tokenizer=False):
+def get_tokenizer(model_name_or_path, fast_tokenizer=True):
     tokenizer = AutoTokenizer.from_pretrained(
         model_name_or_path, fast_tokenizer=fast_tokenizer)
     if tokenizer.pad_token is None:
