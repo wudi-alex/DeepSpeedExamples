@@ -106,6 +106,14 @@ class DeepSpeedPPOTrainer():
         # NOTE: this will causes each GPU has different number of examples
         batch_size = seq.shape[0]
         prompt_length = prompts.shape[1]
+
+        print('prompt_length', prompt_length)
+        print('ans_length', seq.shape[1])
+        print(
+            f'-> prompts: {self.tokenizer.batch_decode(prompts[0], skip_special_tokens=True)}\n'
+            f'-> answers: {self.tokenizer.batch_decode(seq[0], skip_special_tokens=True)}'
+        )
+
         self.prompt_length = prompt_length
         ans = seq[:, prompt_length:]
         valid_ans_len = (ans != self.tokenizer.pad_token_id).sum(dim=-1)
@@ -135,8 +143,8 @@ class DeepSpeedPPOTrainer():
         if not out_seq:
             print(
                 f'All generated results are too short for rank={self.args.local_rank} step={step}\n'
-                f'-> prompts: {self.tokenizer.batch_decode(prompts, skip_special_tokens=True)}\n'
-                f'-> answers: {self.tokenizer.batch_decode(ans, skip_special_tokens=True)}'
+                f'-> prompts: {self.tokenizer.batch_decode(prompts[0], skip_special_tokens=True)}\n'
+                f'-> answers: {self.tokenizer.batch_decode(ans[0], skip_special_tokens=True)}'
             )
             return None
 
