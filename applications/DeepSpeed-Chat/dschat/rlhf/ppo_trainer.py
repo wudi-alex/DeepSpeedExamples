@@ -102,7 +102,7 @@ class DeepSpeedPPOTrainer():
                 pad_token_id=self.tokenizer.pad_token_id,
                 eos_token_id=self.tokenizer.eos_token_id,
                 temperature=1.0,
-                max_new_tokens=self.max_answer_seq_len
+                max_new_tokens=self.max_answer_seq_len,
                 **kwargs)
 
         # Filter out seq with no answers (or very short). This happens when users directly use the pre-training ckpt without supervised finetuning
