@@ -95,10 +95,10 @@ class DeepSpeedPPOTrainer():
 
         with torch.no_grad():
             seq = self.actor_model.generate(
-                prompts.input_ids,
-                # attention_mask=mask,
+                prompts,
+                attention_mask=mask,
                 # max_length=max_min_length,
-                # synced_gpus=self.z3_enabled,
+                synced_gpus=self.z3_enabled,
                 pad_token_id=self.tokenizer.pad_token_id,
                 eos_token_id=self.tokenizer.eos_token_id,
                 temperature=1.0,
