@@ -96,7 +96,7 @@ def generate(model,
                                   num_beam_groups=num_beam_groups,
                                   do_sample=do_sample,
                                   num_return_sequences=num_return_sequences,
-                                  # max_new_tokens=max_new_tokens,
+                                  max_new_tokens=max_new_tokens,
                                   pad_token_id=tokenizer.pad_token_id,
                                   eos_token_id=tokenizer.eos_token_id,
                                   temperature=1.0,
@@ -104,7 +104,7 @@ def generate(model,
                                   )
 
     result = tokenizer.batch_decode(generate_ids,
-                                    skip_special_tokens=False)
+                                    skip_swpecial_tokens=False)
     return result
 
 
@@ -229,7 +229,11 @@ def main():
     # to make it a more meaningful comparison.
     if args.language == "English":
         prompts = [
-            """<PRE> public String[] getMultiAttr(String name) {\n    String v[] = super.getMultiAttr(name);\n    if (v.length > 0) return v;\n    try {\n      Config c = mProv.getConfig();\n      // buggy code\n      // if (!c.isInheritedDomainAttr(name))\n <SUF> return sEmptyMulti;\n      else return c.getMultiAttr(name);\n    } catch (ServiceException e) {\n      return sEmptyMulti;\n    }\n  } <MID>"""
+            # """<PRE> public String[] getMultiAttr(String name) {\n    String v[] = super.getMultiAttr(name);\n    if (v.length > 0) return v;\n    try {\n      Config c = mProv.getConfig();\n      // buggy code\n      // if (!c.isInheritedDomainAttr(name))\n <SUF> return sEmptyMulti;\n      else return c.getMultiAttr(name);\n    } catch (ServiceException e) {\n      return sEmptyMulti;\n    }\n  } <MID>"""
+        """<|role_start|>system<|role_end|>You are an intelligent programming assistant for JAVA.<|role_start|>human<|role_end|>Choose a correct patch from the following
+ two patches to infill the Java code.\n\nJava code:\npublic static double distance(int[] p1, int[] p2) {\n<INFILL>\n  for (int i = 0; i < p1.length; i++) {\n      final int dp = p1[i] - p2[i];\n      sum += dp * dp;\n  }\n  return Math.sqrt(sum);\n}\n\nPatches:\nA. int sum = 0;\nB. double sum = 0;<|role_sta
+rt|>bot<|role_end|>The correct patch is B.<|role_start|>human<|role_end|>Choose a correct patch from the following two patches to infill the Java code.\n\nJava code:\npublic void captureArgumentsFrom(Invocation i) {\n    int k = 0;\n    for (Matcher m : matchers) {\n<INFILL>\n\n            ((CapturesArgumen
+ts) m).captureFrom(i.getArguments()[k]);\n        }\n        k++;\n    }\n}\n\nPatches:\nA. if (m instanceof CapturesArguments && i.getArguments().length > k) {\nB. if (m instanceof CapturesArguments) {<|role_start|>bot<|role_end|>"""
         ]
     elif args.language == "Chinese":
         prompts = [
