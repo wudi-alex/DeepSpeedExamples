@@ -222,8 +222,13 @@ def main():
     # to make it a more meaningful comparison.
     if args.language == "English":
         prompts = [
-            """<PRE> public String toString() {\n    StringBuilder sigma = new StringBuilder();\n    for (String property : this.getProperties())\n      // buggy code\n      // sigma\n      //     .append(getClass().getSimpleName())\n      //     .append(property)\n      //     .append(" = ")\n      //     .append(this.getValue(property))\n      //     .append("; ");\n <SUF>    for (String key : getForeignKeys()) {\n      Record subrecord = (Record) getValue(ke
-y);\n      if (subrecord != null) sigma.append(subrecord.toString());\n    }\n    return sigma.toString();\n  } <MID>"""
+            """</s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s
+></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s
+></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s
+></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s
+></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s
+></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s></s><s> <PRE> public String[] getMultiAttr(String name) {\n    String v[] = super.getMultiAttr(name);\n    if (v.length > 0) return v;\n    try {\n      Config c = mProv.getConfig();\n      // buggy code\n      
+// if (!c.isInheritedDomainAttr(name))\n <SUF> return sEmptyMulti;\n      else return c.getMultiAttr(name);\n    } catch (ServiceException e) {\n      return sEmptyMulti;\n    }\n  } <MID>"""
         ]
     elif args.language == "Chinese":
         prompts = [
