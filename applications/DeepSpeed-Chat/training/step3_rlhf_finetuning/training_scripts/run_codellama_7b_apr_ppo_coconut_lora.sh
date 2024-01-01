@@ -45,7 +45,7 @@ Actor_Lr=9.65e-6
 Critic_Lr=5e-6
 
 deepspeed --master_port 12346 ../main.py \
-   --data_path /projects/ksun3/dwu25/apr_datasets_processing/coconut/data/apr_rlhf_rm_coconut/ \
+   --data_path /projects/ksun3/dwu25/apr_datasets_processing/coconut/data/apr_rlhf_coconut \
    --data_split 2,4,4 \
    --actor_model_name_or_path /projects/ksun3/dwu25/trained_models/ds_apr_sft \
    --critic_model_name_or_path /projects/ksun3/dwu25/trained_models/ds_apr_rm \
