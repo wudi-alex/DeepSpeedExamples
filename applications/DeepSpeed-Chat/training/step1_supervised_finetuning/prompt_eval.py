@@ -219,12 +219,9 @@ def main():
     # to make it a more meaningful comparison.
     if args.language == "English":
         prompts = [
-            "Human: Please tell me about Microsoft in a few sentence? Assistant:",
-            "Human: Explain the moon landing to a 6 year old in a few sentences. Assistant:",
-            "Human: Write a short poem about a wise frog. Assistant:",
-            "Human: Who was president of the United States in 1955? Assistant:",
-            "Human: How does a telescope work? Assistant:",
-            "Human: Why do birds migrate south for the winter? Assistant:"
+            """<PRE> public String toString() {\n    StringBuilder sigma = new StringBuilder();\n    for (String property : this.getProperties())\n      // b
+uggy code\n      // sigma\n      //     .append(getClass().getSimpleName())\n      //     .append(property)\n      //     .append(" = ")\n      //     .append(this.getValue(property))\n      //     .append("; ");\n <SUF>    for (String key : getForeignKeys()) {\n      Record subrecord = (Record) getValue(ke
+y);\n      if (subrecord != null) sigma.append(subrecord.toString());\n    }\n    return sigma.toString();\n  } <MID>"""
         ]
     elif args.language == "Chinese":
         prompts = [
