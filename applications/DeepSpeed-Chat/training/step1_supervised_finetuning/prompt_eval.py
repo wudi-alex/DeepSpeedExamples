@@ -102,8 +102,7 @@ def generate(model,
                                   )
 
     result = tokenizer.batch_decode(generate_ids,
-                                    skip_special_tokens=False,
-                                    clean_up_tokenization_spaces=False)
+                                    skip_special_tokens=False)
     return result
 
 
