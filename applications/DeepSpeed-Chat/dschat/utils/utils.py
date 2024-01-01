@@ -80,6 +80,7 @@ def get_tokenizer(model_name_or_path, fast_tokenizer=True):
     #     # tokenizer.add_special_tokens({'pad_token': tokenizer.eos_token})
     #     tokenizer.add_special_tokens({'pad_token': '[PAD]'})
     #     tokenizer.padding_side = 'right'
+    # tokenizer.pad_token_id = tokenizer.pad_token_id
     return tokenizer
 
 
@@ -148,7 +149,6 @@ def load_state_dict_into_model(model_to_load=None,
                                state_dict=None,
                                start_prefix="",
                                zero_stage=0):
-
     # copy state_dict so _load_from_state_dict can modify it
     metadata = getattr(state_dict, "_metadata", None)
     state_dict = state_dict.copy()
@@ -199,14 +199,14 @@ def load_state_dict_into_model(model_to_load=None,
 
 
 def get_optimizer_grouped_parameters(
-    model,
-    weight_decay,
-    lora_lr=5e-4,
-    no_decay_name_list=[
-        "bias", "layer_norm.weight", "layernorm.weight", "norm.weight",
-        "ln_f.weight"
-    ],
-    lora_name_list=["lora_right_weight", "lora_left_weight"],
+        model,
+        weight_decay,
+        lora_lr=5e-4,
+        no_decay_name_list=[
+            "bias", "layer_norm.weight", "layernorm.weight", "norm.weight",
+            "ln_f.weight"
+        ],
+        lora_name_list=["lora_right_weight", "lora_left_weight"],
 ):
     optimizer_grouped_parameters = [
         {
@@ -217,7 +217,7 @@ def get_optimizer_grouped_parameters(
                                                     for nd in lora_name_list))
             ],
             "weight_decay":
-            weight_decay,
+                weight_decay,
         },
         {
             "params": [
@@ -227,9 +227,9 @@ def get_optimizer_grouped_parameters(
                                                 for nd in lora_name_list))
             ],
             "weight_decay":
-            weight_decay,
+                weight_decay,
             "lr":
-            lora_lr
+                lora_lr
         },
         {
             "params": [
@@ -238,7 +238,7 @@ def get_optimizer_grouped_parameters(
                         for nd in no_decay_name_list) and p.requires_grad)
             ],
             "weight_decay":
-            0.0,
+                0.0,
         },
     ]
 
