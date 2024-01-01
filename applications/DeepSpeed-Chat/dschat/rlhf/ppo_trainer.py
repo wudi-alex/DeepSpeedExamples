@@ -110,8 +110,8 @@ class DeepSpeedPPOTrainer():
         print('prompt_length', prompt_length)
         print('ans_length', seq.shape[1])
         print(
-            f'-> prompts: {self.tokenizer.batch_decode(prompts[0], skip_special_tokens=True)}\n'
-            f'-> answers: {self.tokenizer.batch_decode(seq[0], skip_special_tokens=True)}'
+            f'-> prompts: {self.tokenizer.batch_decode([prompts[0]], skip_special_tokens=False)}\n'
+            f'-> answers: {self.tokenizer.batch_decode([seq[0]], skip_special_tokens=False)}'
         )
 
         self.prompt_length = prompt_length
@@ -131,11 +131,11 @@ class DeepSpeedPPOTrainer():
         for i in range(batch_size):
             if valid_ans_len[
                 i] <= 1:  # if the answer is shorter than 1 token, drop it
-                print(
-                    f'Dropping too short generated answer: {step=}: \n'
-                    f'prompts: {self.tokenizer.batch_decode(prompts, skip_special_tokens=True)}\n'
-                    f'answers: {self.tokenizer.batch_decode(ans, skip_special_tokens=True)}'
-                )
+                # print(
+                #     f'Dropping too short generated answer: {step=}: \n'
+                #     f'prompts: {self.tokenizer.batch_decode(prompts, skip_special_tokens=True)}\n'
+                #     f'answers: {self.tokenizer.batch_decode(ans, skip_special_tokens=True)}'
+                # )
                 continue
             else:
                 out_seq.append(seq[i:i + 1])
@@ -143,8 +143,8 @@ class DeepSpeedPPOTrainer():
         if not out_seq:
             print(
                 f'All generated results are too short for rank={self.args.local_rank} step={step}\n'
-                f'-> prompts: {self.tokenizer.batch_decode(prompts[0], skip_special_tokens=True)}\n'
-                f'-> answers: {self.tokenizer.batch_decode(ans[0], skip_special_tokens=True)}'
+                f'-> prompts: {self.tokenizer.batch_decode([prompts[0]], skip_special_tokens=False)}\n'
+                f'-> answers: {self.tokenizer.batch_decode([ans[0]], skip_special_tokens=False)}'
             )
             return None
 
