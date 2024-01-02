@@ -94,7 +94,7 @@ class DeepSpeedPPOTrainer():
             kwargs = dict()
 
         with torch.no_grad():
-            seq = self.actor_model.generate(
+            seq = self.actor_model.module.generate(
                 prompts,
                 attention_mask=mask,
                 # max_length=max_min_length,
