@@ -75,4 +75,5 @@ deepspeed --master_port 12346 ../main.py \
    --critic_lora_dim 32 \
    --critic_lora_module_name "layers." \
    --actor_lora_module_name "layers." \
-   --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_ppo
+   --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_ppo \
+   --print_answers

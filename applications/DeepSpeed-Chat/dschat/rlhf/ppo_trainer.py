@@ -97,25 +97,17 @@ class DeepSpeedPPOTrainer():
             seq = self.actor_model.module.generate(
                 prompts,
                 attention_mask=mask,
-                # max_length=max_min_length,
+                max_length=max_min_length,
                 synced_gpus=self.z3_enabled,
                 pad_token_id=self.tokenizer.pad_token_id,
                 eos_token_id=self.tokenizer.eos_token_id,
                 temperature=1.0,
-                max_new_tokens=self.max_answer_seq_len,
                 **kwargs)
 
         # Filter out seq with no answers (or very short). This happens when users directly use the pre-training ckpt without supervised finetuning
         # NOTE: this will causes each GPU has different number of examples
         batch_size = seq.shape[0]
         prompt_length = prompts.shape[1]
-
-        print('prompt_length', prompt_length)
-        print('ans_length', seq.shape[1])
-        print(
-            f'-> prompts: {self.tokenizer.batch_decode([prompts[0]], skip_special_tokens=False)}\n'
-            f'-> answers: {self.tokenizer.batch_decode([seq[0]], skip_special_tokens=False)}'
-        )
 
         self.prompt_length = prompt_length
         ans = seq[:, prompt_length:]
@@ -186,10 +178,10 @@ class DeepSpeedPPOTrainer():
             reward_seq = torch.cat([reward_seq_prompt.input_ids.to(device), seq[:, self.prompt_length:]], dim=1)
             reward_attention_mask = reward_seq.not_equal(pad_token_id).long()
 
-            if self.args.print_answers and (step % self.args.print_answers_interval == 0):
-                print(
-                    f"--- reward prompt --> step={step}, rank={torch.distributed.get_rank()}, {self.tokenizer.batch_decode(reward_seq, skip_special_tokens=True)}"
-                )
+            # if self.args.print_answers and (step % self.args.print_answers_interval == 0):
+            print(
+                f"--- reward prompt --> step={step}, rank={torch.distributed.get_rank()}, {self.tokenizer.batch_decode(reward_seq, skip_special_tokens=True)}"
+            )
 
             # reward_score = self.reward_model.forward_value(
             #     seq, attention_mask,
