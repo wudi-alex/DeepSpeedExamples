@@ -179,9 +179,9 @@ class DeepSpeedPPOTrainer():
             reward_attention_mask = reward_seq.not_equal(pad_token_id).long()
 
             # if self.args.print_answers and (step % self.args.print_answers_interval == 0):
-            print(
-                f"--- reward prompt --> step={step}, rank={torch.distributed.get_rank()}, {self.tokenizer.batch_decode(reward_seq, skip_special_tokens=True)}"
-            )
+            # print(
+            #     f"--- reward prompt --> step={step}, rank={torch.distributed.get_rank()}, {self.tokenizer.batch_decode(reward_seq, skip_special_tokens=True)}"
+            # )
 
             # reward_score = self.reward_model.forward_value(
             #     seq, attention_mask,
