@@ -175,14 +175,15 @@ class DeepSpeedPPOTrainer():
             output_ref = self.ref_model(seq, attention_mask=attention_mask)
 
             # reward model need to remove buggy lines
-
+            device = get_accelerator().current_device_name()
             seq_prompt_text = self.tokenizer.batch_decode(seq[:, :self.prompt_length])
             reward_seq_prompt_text = [remove_commented_buggy_line(seq) for seq in seq_prompt_text]
 
             reward_seq_prompt = self.tokenizer.batch_encode_plus(reward_seq_prompt_text, return_tensors="pt",
                                                                  padding="max_length",
                                                                  max_length=self.prompt_length)
-            reward_seq = torch.cat([reward_seq_prompt.input_ids, seq[:, self.prompt_length:]], dim=1)
+
+            reward_seq = torch.cat([reward_seq_prompt.input_ids.to(device), seq[:, self.prompt_length:]], dim=1)
             reward_attention_mask = reward_seq.not_equal(pad_token_id).long()
 
             if self.args.print_answers and (step % self.args.print_answers_interval == 0):
