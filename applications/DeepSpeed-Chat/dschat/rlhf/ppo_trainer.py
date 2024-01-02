@@ -182,7 +182,7 @@ class DeepSpeedPPOTrainer():
             reward_seq_prompt = self.tokenizer.batch_encode_plus(reward_seq_prompt_text, return_tensors="pt",
                                                                  padding="max_length",
                                                                  max_length=self.prompt_length)
-            reward_seq = torch.cat([reward_seq_prompt, seq[:, self.prompt_length:]], dim=1)
+            reward_seq = torch.cat([reward_seq_prompt.input_ids, seq[:, self.prompt_length:]], dim=1)
             reward_attention_mask = reward_seq.not_equal(pad_token_id).long()
 
             if self.args.print_answers and (step % self.args.print_answers_interval == 0):
