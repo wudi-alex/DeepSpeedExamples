@@ -22,7 +22,7 @@ setuptools.setup(
     install_requires=[
         "datasets>=2.8.0", "sentencepiece>=0.1.97", "protobuf==3.20.3",
         "accelerate>=0.15.0", "torch>=1.12.0", "deepspeed>=0.9.2",
-        "transformers==3.5.0", "tensorboard"
+        "transformers==4.35.0", "tensorboard"
     ],
     extras_require={
         "azureml": [
