@@ -5,9 +5,9 @@
 #SBATCH --output=/projects/ksun3/%u/sbatch_log/%x-%N-%j.out
 #SBATCH --error=/projects/ksun3/%u/sbatch_log/%x-%N-%j.err
 #SBATCH --nodes=1
-#SBATCH --gres=gpu:A100.80gb:4
+#SBATCH --gres=gpu:A100.80gb:2
 #SBATCH --ntasks-per-node=20
-#SBATCH --mem=480G
+#SBATCH --mem=200G
 #SBATCH --export=ALL
 #SBATCH --time=5-00:00:00
 
@@ -50,8 +50,8 @@ deepspeed --master_port 12346 ../main.py \
    --actor_model_name_or_path /projects/ksun3/dwu25/trained_models/ds_apr_sft \
    --critic_model_name_or_path /projects/ksun3/dwu25/trained_models/ds_apr_rm \
    --num_padding_at_beginning 0 \
-   --per_device_generation_batch_size 4 \
-   --per_device_training_batch_size 4 \
+   --per_device_generation_batch_size 16 \
+   --per_device_training_batch_size 16 \
    --generation_batches 1 \
    --ppo_epochs 1 \
    --max_answer_seq_len 100 \
