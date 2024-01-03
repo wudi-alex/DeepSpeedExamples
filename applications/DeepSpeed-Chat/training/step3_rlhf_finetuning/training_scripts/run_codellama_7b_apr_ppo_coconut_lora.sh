@@ -70,8 +70,7 @@ deepspeed --master_port 12346 ../main.py \
    --num_warmup_steps 100 \
    --deepspeed --seed 1234 \
    --actor_zero_stage 2 \
-   --critic_zero_stage 3 \
-   --warmup_rate 0.05 \
+   --critic_zero_stage 2 \
    --actor_lora_dim 8 \
    --critic_lora_dim 8 \
    --critic_lora_module_name "layers." \
