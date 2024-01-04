@@ -41,7 +41,7 @@ deepspeed ../main.py \
    --learning_rate 5e-6 \
    --weight_decay 0.1 \
    --num_padding_at_beginning 0 \
-   --num_train_epochs 2 \
+   --num_train_epochs 1 \
    --gradient_accumulation_steps 1 \
    --lr_scheduler_type cosine \
    --num_warmup_steps 0 \
@@ -54,4 +54,4 @@ deepspeed ../main.py \
    --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_rm \
    --enable_tensorboard \
    --tensorboard_path /projects/ksun3/dwu25/trained_models/ds_apr_rm/tb \
-   --eval_interval 200
+   --eval_interval 400
