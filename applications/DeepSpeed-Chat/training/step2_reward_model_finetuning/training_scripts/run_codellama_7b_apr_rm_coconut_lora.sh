@@ -35,8 +35,8 @@ deepspeed ../main.py \
    --data_path /projects/ksun3/dwu25/apr_datasets_processing/coconut/data/apr_rlhf_coconut \
    --data_split 0,4,6 \
    --model_name_or_path codellama/CodeLlama-7b-hf \
-   --per_device_train_batch_size 16 \
-   --per_device_eval_batch_size 32 \
+   --per_device_train_batch_size 32 \
+   --per_device_eval_batch_size 64 \
    --max_seq_len 600 \
    --learning_rate 5e-6 \
    --weight_decay 0.1 \
@@ -52,4 +52,4 @@ deepspeed ../main.py \
    --lora_dim 8 \
    --lora_module_name "layers." \
    --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_rm \
-   --eval_interval 1000
+   --eval_interval 500
