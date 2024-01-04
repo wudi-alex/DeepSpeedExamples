@@ -52,4 +52,6 @@ deepspeed ../main.py \
    --lora_dim 8 \
    --lora_module_name "layers." \
    --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_rm \
-   --eval_interval 500
+   --enable_tensorboard \
+   --tensorboard_path /projects/ksun3/dwu25/trained_models/ds_apr_rm/tb \
+   --eval_interval 200
