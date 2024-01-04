@@ -49,7 +49,6 @@ deepspeed ../main.py \
    --gradient_checkpointing \
    --zero_stage 2 \
    --deepspeed \
-   --offload
    --lora_dim 8 \
    --lora_module_name "layers." \
    --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_rm \
