@@ -20,6 +20,7 @@ from transformers import (
 )
 
 import deepspeed
+deepspeed.ops.op_builder.CPUAdamBuilder().load()
 from deepspeed.ops.adam import DeepSpeedCPUAdam, FusedAdam
 from deepspeed.accelerator import get_accelerator
 
