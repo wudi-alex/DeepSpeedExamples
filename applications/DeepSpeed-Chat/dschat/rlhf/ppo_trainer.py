@@ -166,31 +166,31 @@ class DeepSpeedPPOTrainer():
             output = self.actor_model(seq, attention_mask=attention_mask)
             output_ref = self.ref_model(seq, attention_mask=attention_mask)
 
-            # reward model need to remove buggy lines
-            device = get_accelerator().current_device_name()
-            seq_prompt_text = self.tokenizer.batch_decode(seq[:, :self.prompt_length])
-            reward_seq_prompt_text = [remove_commented_buggy_line(seq) for seq in seq_prompt_text]
-
-            reward_seq_prompt = self.tokenizer.batch_encode_plus(reward_seq_prompt_text, return_tensors="pt",
-                                                                 padding="max_length",
-                                                                 max_length=self.prompt_length)
-
-            reward_seq = torch.cat([reward_seq_prompt.input_ids.to(device), seq[:, self.prompt_length:]], dim=1)
-            reward_attention_mask = reward_seq.not_equal(pad_token_id).long()
+            # # reward model need to remove buggy lines
+            # device = get_accelerator().current_device_name()
+            # seq_prompt_text = self.tokenizer.batch_decode(seq[:, :self.prompt_length])
+            # reward_seq_prompt_text = [remove_commented_buggy_line(seq) for seq in seq_prompt_text]
+            #
+            # reward_seq_prompt = self.tokenizer.batch_encode_plus(reward_seq_prompt_text, return_tensors="pt",
+            #                                                      padding="max_length",
+            #                                                      max_length=self.prompt_length)
+            #
+            # reward_seq = torch.cat([reward_seq_prompt.input_ids.to(device), seq[:, self.prompt_length:]], dim=1)
+            # reward_attention_mask = reward_seq.not_equal(pad_token_id).long()
 
             # if self.args.print_answers and (step % self.args.print_answers_interval == 0):
             # print(
             #     f"--- reward prompt --> step={step}, rank={torch.distributed.get_rank()}, {self.tokenizer.batch_decode(reward_seq, skip_special_tokens=True)}"
             # )
 
-            # reward_score = self.reward_model.forward_value(
-            #     seq, attention_mask,
-            #     prompt_length=self.prompt_length)['chosen_end_scores'].detach(
-            # )
             reward_score = self.reward_model.forward_value(
-                reward_seq, reward_attention_mask,
+                seq, attention_mask,
                 prompt_length=self.prompt_length)['chosen_end_scores'].detach(
             )
+            # reward_score = self.reward_model.forward_value(
+            #     reward_seq, reward_attention_mask,
+            #     prompt_length=self.prompt_length)['chosen_end_scores'].detach(
+            # )
             values = self.critic_model.forward_value(
                 seq, attention_mask, return_value_only=True).detach()[:, :-1]
 
