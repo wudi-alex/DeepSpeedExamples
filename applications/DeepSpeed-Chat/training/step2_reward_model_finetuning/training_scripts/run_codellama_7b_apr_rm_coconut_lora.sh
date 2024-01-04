@@ -47,7 +47,7 @@ deepspeed ../main.py \
    --num_warmup_steps 0 \
    --seed 1234 \
    --gradient_checkpointing \
-   --zero_stage 2 \
+   --zero_stage 3 \
    --deepspeed \
    --offload \
    --lora_dim 8 \
