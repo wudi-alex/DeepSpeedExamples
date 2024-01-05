@@ -118,11 +118,7 @@ class RewardModel(nn.Module):
         loss = loss / bs
         chosen_mean_scores = torch.stack(chosen_mean_scores)
         rejected_mean_scores = torch.stack(rejected_mean_scores)
-        print({
-            "loss": loss,
-            "chosen_mean_scores": chosen_mean_scores,
-            "rejected_mean_scores": rejected_mean_scores,
-        })
+        print({"loss": loss})
         return {
             "loss": loss,
             "chosen_mean_scores": chosen_mean_scores,
