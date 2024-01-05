@@ -120,11 +120,11 @@ class DeepSpeedPPOTrainer():
                 print(
                     f"--- prompt --> step={step}, rank={torch.distributed.get_rank()}"
                 )
-                print({self.tokenizer.batch_decode(prompts[i], skip_special_tokens=True)})
+                print(f'{self.tokenizer.batch_decode(prompts[i], skip_special_tokens=True)}')
                 print(
                     f"--- ans    --> step={step}, rank={torch.distributed.get_rank()}"
                 )
-                print({self.tokenizer.batch_decode(ans[i], skip_special_tokens=True)})
+                print(f'{self.tokenizer.batch_decode(ans[i], skip_special_tokens=True)}')
 
         out_seq = []
         for i in range(batch_size):
