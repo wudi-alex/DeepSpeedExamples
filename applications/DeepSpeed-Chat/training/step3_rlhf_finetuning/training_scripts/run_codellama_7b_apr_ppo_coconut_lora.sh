@@ -45,9 +45,9 @@ Actor_Lr=9.65e-6
 Critic_Lr=5e-6
 
 deepspeed --master_port 12346 ../main.py \
-   --data_path /projects/ksun3/dwu25/apr_datasets_processing/coconut/data/apr_rlhf_coconut \
+   --data_path /projects/ksun3/dwu25/apr_datasets_processing/coconut/data/apr_rlhf \
    --data_split 2,4,4 \
-   --actor_model_name_or_path /projects/ksun3/dwu25/trained_models/ds_apr_sft \
+   --actor_model_name_or_path codellama/CodeLlama-7b-hf \
    --critic_model_name_or_path /projects/ksun3/dwu25/trained_models/ds_apr_rm \
    --num_padding_at_beginning 0 \
    --per_device_generation_batch_size 16 \
@@ -56,8 +56,8 @@ deepspeed --master_port 12346 ../main.py \
    --ppo_epochs 1 \
    --max_answer_seq_len 100 \
    --max_prompt_seq_len 500 \
-   --actor_learning_rate 5e-6 \
-   --critic_learning_rate 2e-6 \
+   --actor_learning_rate 9e-6 \
+   --critic_learning_rate 5e-6 \
    --actor_weight_decay 0.1 \
    --critic_weight_decay 0.1 \
    --num_train_epochs 1 \
@@ -71,8 +71,8 @@ deepspeed --master_port 12346 ../main.py \
    --deepspeed --seed 1234 \
    --actor_zero_stage 2 \
    --critic_zero_stage 2 \
-   --actor_lora_dim 8 \
-   --critic_lora_dim 8 \
+   --actor_lora_dim 32 \
+   --critic_lora_dim 32 \
    --critic_lora_module_name "layers." \
    --actor_lora_module_name "layers." \
    --enable_tensorboard \
