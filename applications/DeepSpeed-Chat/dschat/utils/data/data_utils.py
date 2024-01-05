@@ -294,7 +294,7 @@ def create_prompt_dataset(local_rank,
                           seed,
                           tokenizer,
                           max_seq_len,
-                          end_of_conversation_token="<|endoftext|>",
+                          end_of_conversation_token="</s>",
                           sft_only_data_path=[],
                           reload=False):
     """
