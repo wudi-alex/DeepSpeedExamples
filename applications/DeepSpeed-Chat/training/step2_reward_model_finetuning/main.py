@@ -248,7 +248,7 @@ def main():
     additional_special_tokens = args.end_of_conversation_token if args.add_eot_token else None
     tokenizer = load_hf_tokenizer(args.model_name_or_path,
                                   fast_tokenizer=True,
-                                  add_special_tokens=additional_special_tokens)
+                                  add_special_tokens=None)
     rm_model = create_critic_model(args.model_name_or_path,
                                    tokenizer,
                                    ds_config,
