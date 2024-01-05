@@ -76,7 +76,8 @@ deepspeed --master_port 12346 ../main.py \
    --critic_lora_module_name "layers." \
    --actor_lora_module_name "layers." \
    --enable_tensorboard \
-   --tensorboard_path /projects/ksun3/dwu25/trained_models/ds_apr_ppo/tb \
+   --tensorboard_path /projects/ksun3/dwu25/trained_models/ds_apr_ppo_v0/tb \
    --enable_hybrid_engine \
    --dtype bf16 \
-   --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_ppo
+   --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_ppo_v0 \
+   --print_answers

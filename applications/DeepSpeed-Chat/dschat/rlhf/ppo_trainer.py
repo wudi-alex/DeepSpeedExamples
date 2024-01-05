@@ -115,12 +115,16 @@ class DeepSpeedPPOTrainer():
 
         if self.args.print_answers and (step % self.args.print_answers_interval
                                         == 0):
-            print(
-                f"--- prompt --> step={step}, rank={torch.distributed.get_rank()}, {self.tokenizer.batch_decode(prompts, skip_special_tokens=True)}"
-            )
-            print(
-                f"--- ans    --> step={step}, rank={torch.distributed.get_rank()}, {self.tokenizer.batch_decode(ans, skip_special_tokens=True)}"
-            )
+            for i in range(batch_size):
+                print('------------------------------------------------------------')
+                print(
+                    f"--- prompt --> step={step}, rank={torch.distributed.get_rank()}"
+                )
+                print({self.tokenizer.batch_decode(prompts[i], skip_special_tokens=True)})
+                print(
+                    f"--- ans    --> step={step}, rank={torch.distributed.get_rank()}"
+                )
+                print({self.tokenizer.batch_decode(ans[i], skip_special_tokens=True)})
 
         out_seq = []
         for i in range(batch_size):
