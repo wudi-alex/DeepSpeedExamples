@@ -32,13 +32,13 @@ if [ "$ZERO_STAGE" == "" ]; then
 fi
 
 deepspeed ../main.py \
-   --data_path /projects/ksun3/dwu25/apr_datasets_processing/coconut/data/apr_rlhf_coconut \
+   --data_path /projects/ksun3/dwu25/apr_datasets_processing/coconut/data/apr_rlhf \
    --data_split 0,4,6 \
    --model_name_or_path codellama/CodeLlama-7b-hf \
    --per_device_train_batch_size 64 \
    --per_device_eval_batch_size 128 \
    --max_seq_len 600 \
-   --learning_rate 5e-6 \
+   --learning_rate 9e-6 \
    --weight_decay 0.1 \
    --num_padding_at_beginning 0 \
    --num_train_epochs 1 \
@@ -50,9 +50,9 @@ deepspeed ../main.py \
    --zero_stage 3 \
    --offload \
    --deepspeed \
-   --lora_dim 8 \
+   --lora_dim 32 \
    --lora_module_name "layers." \
    --output_dir /projects/ksun3/dwu25/trained_models/ds_apr_rm \
    --enable_tensorboard \
    --tensorboard_path /projects/ksun3/dwu25/trained_models/ds_apr_rm/tb \
-   --eval_interval 100
+   --eval_interval 50

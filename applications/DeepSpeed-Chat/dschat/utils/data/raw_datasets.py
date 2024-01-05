@@ -776,8 +776,8 @@ class AprRmCoconutDataset(PromptRawDataset):
 
     def __init__(self, output_path, seed, local_rank, dataset_name):
         super().__init__(output_path, seed, local_rank, dataset_name)
-        self.dataset_name = "apr_rlhf_coconut"
-        self.dataset_name_clean = "apr_rlhf_coconut"
+        self.dataset_name = "apr_rlhf"
+        self.dataset_name_clean = "apr_rlhf"
 
     def get_train_data(self):
         return self.raw_datasets["train"]
